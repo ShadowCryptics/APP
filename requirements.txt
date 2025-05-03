@@ -5,3 +5,4 @@ PyJWT
 bcrypt
 geocoder
 user-agents
+gunicorn
