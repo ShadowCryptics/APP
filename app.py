@@ -13,6 +13,7 @@ import socket
 import geocoder
 import re
 from user_agents import parse
+import threading
 
 # === CONFIGURATION === #
 app = Flask(__name__)
@@ -408,7 +409,19 @@ def log_keystrike():
         "log_id": new_log.id
     }), 201
 
+def periodic_request():
+    while True:
+        try:
+            response = requests.get("https://cryptxhere.onrender.com")
+            print(f"[PING] {datetime.utcnow().isoformat()} - Status: {response.status_code}")
+        except Exception as e:
+            print(f"[ERROR] {datetime.utcnow().isoformat()} - {e}")
+        time.sleep(10)
+
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+    threading.Thread(target=periodic_request, daemon=True).start()
     app.run(host='0.0.0.0', port=5000)
