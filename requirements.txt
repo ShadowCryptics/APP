@@ -6,3 +6,4 @@ bcrypt
 geocoder
 user-agents
 gunicorn
+requests
